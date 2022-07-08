@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   123.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 16:14:14 by lchew             #+#    #+#             */
-/*   Updated: 2022/07/08 16:14:03 by lchew            ###   ########.fr       */
+/*   Updated: 2022/07/08 16:12:28 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*get_next_line(int fd)
 	int			i;
 	char		txtread[BUFFER_SIZE + 1];
 	int			nbyte;
-	static char	*buffer;
+	static char	buffer[32700];
 	int			find_nl;
 	int			count;
 
@@ -29,18 +29,18 @@ char	*get_next_line(int fd)
 	if (fd < 0)
 		return (res = NULL);
 	nbyte = read(fd, txtread, BUFFER_SIZE);
-	// printf("debug 1: txt = \"%s\", txtp = %p, nbyte = %i\n\n", txtread, txtread, nbyte);
+	printf("debug 1: txt = \"%s\", txtp = %p, nbyte = %i\n\n", txtread, txtread, nbyte);
 	// if (nbyte == 0 && *txtread == '\0')
 	// 	return (res);
-	if (nbyte == 0 && buffer && *buffer == '\0')
+	if (nbyte == 0 && *buffer == '\0')
 		return (res);
 	while (find_nl != 1 && nbyte != 0)
 	{
 		txtread[BUFFER_SIZE] = '\0';
-		if (buffer == NULL)
-			buffer = ft_substr(txtread, 0, BUFFER_SIZE);
+		if (*buffer == '\0')
+			ft_strlcpy(buffer, txtread, BUFFER_SIZE + 1);
 		else
-			buffer = ft_strjoin(buffer, txtread);
+			ft_strlcat(buffer, txtread, BUFFER_SIZE + 1);
 		i = 0;
 		while (txtread[i] != '\0' && txtread[i] != '\n' && i < nbyte)
 			++i;
@@ -48,7 +48,7 @@ char	*get_next_line(int fd)
 		nbyte = read(fd, txtread, BUFFER_SIZE);
 	}
 	if (nbyte != 0)
-		buffer = ft_strjoin(buffer, txtread);
+		ft_strlcat(buffer, txtread, BUFFER_SIZE + 1);
 	if (*buffer == '\0')
 		return (res);
 	while (buffer[count] != '\n' && buffer[count] != '\0')
@@ -56,7 +56,8 @@ char	*get_next_line(int fd)
 	// printf("debug 5: buffer = \"%s\", bufferp = %p\n\n", buffer, buffer);
 	// printf("%i\n\n", count);
 	res = ft_substr(buffer, 0, (count));
-	buffer += (count + 1);
+	ft_memmove(buffer, buffer + count + 1, ft_strlen(buffer) - count + 1);
+	// buffer += (count + 1);
 	// printf("debug 5: buffer = \"%s\", bufferp = %p\n\n", buffer, buffer);
 	// printf("debug 6: res = \"%s\", resp = %p\n\n", res, res);
 	return (res);

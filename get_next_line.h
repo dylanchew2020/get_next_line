@@ -18,8 +18,6 @@
 # include <limits.h>
 # include <fcntl.h>
 # include <stdio.h>
-# include <sys/types.h>
-# include <sys/stat.h>
 
 size_t	ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
@@ -27,6 +25,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 // char	*ft_strdup(const char *src);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
+void	*ft_memmove(void *dst, const void *src, size_t len);
 
 char	*get_next_line(int fd);
 

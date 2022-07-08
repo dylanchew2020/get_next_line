@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 17:02:15 by lchew             #+#    #+#             */
-/*   Updated: 2022/07/05 17:44:07 by lchew            ###   ########.fr       */
+/*   Updated: 2022/07/08 16:05:59 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ size_t	ft_strlen(const char *s)
 {
 	int	i;
 
+	if (s == NULL)
+		return (0);
 	i = 0;
 	while (s[i] != '\0')
 		++i;
@@ -78,7 +80,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	}
 	dst[i] = '\0';
 	while (src[i] != '\0')
-		i++;
+		++i;
 	return (i);
 }
 
@@ -100,7 +102,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
 	size_t	slen;
 	size_t	dlen;
-
+	
 	slen = ft_strlen(src);
 	dlen = ft_strlen(dst);
 	if (dstsize < (dlen + 1))
@@ -109,8 +111,11 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	dst += dlen;
 	if (dstsize >= slen)
 		dstsize = slen;
-	while (dstsize-- != 0)
+	while (dstsize != 0)
+	{
 		*dst++ = *(unsigned char *)src++;
+		--dstsize;
+	}
 	dst[dstsize] = '\0';
 	return (slen + dlen);
 }
@@ -142,6 +147,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	sub = malloc((len + 1) * sizeof(char));
 	if (!sub)
 		return (NULL);
+	*sub = '\0';
 	ft_strlcpy(sub, s, len + 1);
 	return (sub);
 }
@@ -164,7 +170,30 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	array = malloc(len * sizeof(char));
 	if (!array)
 		return (NULL);
+	*array = '\0';
 	ft_strlcpy(array, s1, len);
 	ft_strlcat(array, s2, len);
 	return (array);
+}
+
+void	*ft_memmove(void *dst, const void *src, size_t len)
+{
+	unsigned char	*d;
+
+	if (!dst && !src)
+		return (NULL);
+	d = dst;
+	if (d > (unsigned char *)src)
+	{
+		d += len - 1;
+		src += len - 1;
+		while (len-- != 0)
+			*(unsigned char *)d-- = *(unsigned char *)src--;
+	}
+	else
+	{
+		while (len-- != 0)
+			*(unsigned char *)d++ = *(unsigned char *)src++;
+	}
+	return (dst);
 }

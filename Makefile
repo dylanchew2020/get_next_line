@@ -46,16 +46,19 @@ $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 test: fclean
-	@$(CC) -Wall -Werror -Wextra -D BUFFER_SIZE=5 $(HEAD) $(SRC) ./main.c && ./a.out
+	@$(CC) -Wall -Werror -Wextra -g3 -D BUFFER_SIZE=3 $(HEAD) $(SRC) ./main.c && ./a.out
 
 clean:
-	$(RM) $(OBJ) ${B_OBJ}
+	@$(RM) $(OBJ) ${B_OBJ}
 
 fclean: clean
-	$(RM) $(NAME) a.out test.txt
+	@$(RM) $(NAME) a.out
+	@reset
 
 re: fclean all
 
+clean_test:
+	@$(RM) test.txt
 norme:
 	norminette -R CheckForbiddenSourceHeader $(SRC) $(B_SRC) ./get_next_line.h
 
