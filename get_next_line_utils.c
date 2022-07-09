@@ -6,18 +6,12 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 17:02:15 by lchew             #+#    #+#             */
-/*   Updated: 2022/07/08 16:05:59 by lchew            ###   ########.fr       */
+/*   Updated: 2022/07/09 14:49:32 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-/*
-The ft_strlen() function computes the length of the string s.
-
-The ft_strlen() function returns the number of characters that precede the 
-terminating NUL character.
-*/
 size_t	ft_strlen(const char *s)
 {
 	int	i;
@@ -30,19 +24,23 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-/*
-The ft_strdup() function returns a pointer to a new string a of which is 
-a duplicate of the string s.
+char	*ft_strchr(const char *s, int c)
+{
+	if (c >= 256)
+		c -= 256;
+	while (*s != '\0' && *s != c)
+		++s;
+	if (*s == c)
+		return ((char *)s);
+	return (NULL);
+}
 
-The ft_strdup() function returns a pointer to the duplicated string.
-It returns NULL if insufficient memory was available
-*/
-/* char	*ft_strdup(const char *src)
+char	*ft_strdup(const char *src)
 {
 	char	*dup;
 	char	*d;
 
-	dup = ft_malloc((ft_strlen(src) + 1) * sizeof(char));
+	dup = malloc((ft_strlen(src) + 1) * sizeof(char));
 	if (!dup)
 		return (NULL);
 	d = dup;
@@ -50,21 +48,7 @@ It returns NULL if insufficient memory was available
 		*d++ = *src++;
 	*d = '\0';
 	return (dup);
-} */
-
-/*
-**	The ft_strlcpy() copy strings by taking the full size of the destination 
-**	buffer and guarantee NUL-termination if there is room.  Note that room for 
-**	the NULL should be included in dstsize.
-**
-**	ft_strlcpy() copies up to dstsize - 1 characters from the string src to dst,
-**	NUL-terminating the result if dstsize is not 0. If the src and dst strings
-**	overlap, the behavior is undefined.
-**
-**	Return the total length of the string they tried to create, that means the
-**	length of src. If the return value is >= dstsize, the output string has been
-**	truncated.
-*/
+}
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
@@ -84,20 +68,6 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	return (i);
 }
 
-/*
-**	The ft_strlcat() appends string src to the end of dst up to 
-**	(dstsize - strlen(dst) - 1) characters.It takes the full size 
-**	of the buffer, not only the length, and terminates the result 
-**	with NUL as long as is greater than 0.
-**
-**	The ft_strlcat() function returns the total length of the string that 
-**	would have been created if there was unlimited space. This might or 
-**	might not be equal to the length of the string actually created, 
-**	depending on whether there was enough space. This means that you can 
-**	call ft_strlcat() once to find out how much space is required, then 
-**	allocate it if you do not have enough, and finally call ft_strlcat() 
-**	a second time to create the required string.
-*/
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
 	size_t	slen;
@@ -120,13 +90,6 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	return (slen + dlen);
 }
 
-/*
-Allocates with ft_calloc and returns a substring from the string 's'.
-The substring begins at index 'start' and is of maximum size 'len'.
-
-The ft_substr() returns the pointer to the index 'start' of the substring.
-Returns NULL if the allocation fails.
-*/
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char			*sub;
@@ -152,13 +115,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (sub);
 }
 
-/*
-Allocates with ft_calloc and returns a new string, which is the result
-of the concatenation of 's1' and 's2'.
-
-The ft_strjoin() returns the pointer to the new string.
-Returns NULL if the allocation fails.
-*/
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char			*array;

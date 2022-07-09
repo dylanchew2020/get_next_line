@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 17:29:42 by lchew             #+#    #+#             */
-/*   Updated: 2022/07/08 15:33:45 by lchew            ###   ########.fr       */
+/*   Updated: 2022/07/09 22:10:08 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	main(void)
 	{
 		write_a_file();
 	}
-	fd = open("test.txt", O_RDONLY);
+	fd = open("gnlTester/files/nl", O_RDONLY);
 	printf("file descriptor %i\n", fd);
 	buf = get_next_line(fd);
 	while (buf)
@@ -45,7 +45,8 @@ int	main(void)
 		printf("Result : %s\n=====================\n", buf);
 		free(buf);
 		buf = get_next_line(fd);
-	}	
+	}
+	system("leaks a.out");
 	close(fd);
 	return (0);
 }
