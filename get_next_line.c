@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 16:14:14 by lchew             #+#    #+#             */
-/*   Updated: 2022/07/09 22:09:26 by lchew            ###   ########.fr       */
+/*   Updated: 2022/07/10 21:23:57 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ char	*get_next_line(int fd)
 	find_nl = 0;
 	count = 0;
 	nbyte = 1;
-	if (fd < 3 || fd > 999)
+	
+	if (fd < 0 || fd > 999)
 		return (NULL);
 	nbyte = read(fd, txtread, BUFFER_SIZE);
-	// printf("debug 1: txt = \"%s\", txtp = %p, nbyte = %i\n\n", txtread, txtread, nbyte);
 	if (nbyte == -1)
 		return (NULL);
 	if (nbyte == 0 && buffer == NULL)
@@ -59,26 +59,31 @@ char	*get_next_line(int fd)
 		while (txtread[i] != '\0' && txtread[i] != '\n' && i < nbyte)
 			++i;
 		find_nl = (txtread[i] == '\n');
-		nbyte = read(fd, txtread, BUFFER_SIZE);
+		if (txtread[nbyte - 1] != '\n')
+			nbyte = read(fd, txtread, BUFFER_SIZE);
+		else
+			nbyte = 0;
 	}
+	txtread[nbyte] = '\0';
 	if (nbyte != 0)
 	{
 		tmp = ft_strjoin(buffer, txtread);
 		free(buffer);
 		buffer = tmp;
 	}
-	if (*buffer == '\0')
+	if (*buffer == '\0' || buffer == NULL)
+	{
+		free(buffer);
 		return (res);
+	}
 	while (buffer[count] != '\n' && buffer[count] != '\0')
 		++count;
-	// printf("debug 5: buffer = \"%s\", bufferp = %p\n\n", buffer, buffer);
-	// printf("%i\n\n", count);
-	res = ft_substr(buffer, 0, (count));
-	tmp = ft_strdup(buffer + count + 1);
+	if (buffer[count] == '\n')
+		++count;
+	res = ft_substr(buffer, 0, count);
+	tmp = ft_strdup(buffer + count);
 	free(buffer);
 	buffer = tmp;
-	// printf("debug 5: buffer = \"%s\", bufferp = %p\n\n", buffer, buffer);
-	// printf("debug 6: res = \"%s\", resp = %p\n\n", res, res);
 	return (res);
 }
 // txtread = malloc(sizeof(char) * (BUFFER_SIZE + 1));

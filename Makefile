@@ -46,7 +46,7 @@ $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 test: fclean
-	@$(CC) -Wall -Werror -Wextra -g3 -D BUFFER_SIZE=1 $(HEAD) $(SRC) ./main.c && ./a.out
+	@$(CC) -Wall -Werror -Wextra -g3 -fsanitize=address -D BUFFER_SIZE=42 $(HEAD) $(SRC) ./main.c && ./a.out
 
 clean:
 	@$(RM) $(OBJ) ${B_OBJ}

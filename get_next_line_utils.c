@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 17:02:15 by lchew             #+#    #+#             */
-/*   Updated: 2022/07/09 14:49:32 by lchew            ###   ########.fr       */
+/*   Updated: 2022/07/10 20:09:19 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char	*ft_strdup(const char *src)
 	char	*dup;
 	char	*d;
 
+	// printf("src: [%s]\n", src);
 	dup = malloc((ft_strlen(src) + 1) * sizeof(char));
 	if (!dup)
 		return (NULL);
@@ -47,6 +48,7 @@ char	*ft_strdup(const char *src)
 	while (*src != '\0')
 		*d++ = *src++;
 	*d = '\0';
+	// printf("d: [%s]\n", d);
 	return (dup);
 }
 
