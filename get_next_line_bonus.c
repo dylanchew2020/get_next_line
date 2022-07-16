@@ -1,48 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 16:14:14 by lchew             #+#    #+#             */
-/*   Updated: 2022/07/11 22:34:26 by lchew            ###   ########.fr       */
+/*   Updated: 2022/07/16 11:18:38 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
-static char	*gnl_find_nl(char *buffer, int nbyte, char *txtread, int fd);
-static char	*gnl_join(char *buffer, char *txtread);
-static char	*gnl_write(char *buffer, char **res);
+char	*gnl_find_nl(char *buffer, int nbyte, char *txtread, int fd);
+char	*gnl_join(char *buffer, char *txtread);
+char	*gnl_write(char *buffer, char **res);
 
 char	*get_next_line(int fd)
 {
 	char		*res;
 	char		txtread[BUFFER_SIZE + 1];
 	int			nbyte;
-	static char	*buffer;
+	static char	*buffer[1024];
 
 	if (fd < 0 || fd > 1024)
 		return (NULL);
 	nbyte = read(fd, txtread, BUFFER_SIZE);
 	if (nbyte == -1)
 		return (NULL);
-	if (nbyte == 0 && buffer == NULL)
+	if (nbyte == 0 && buffer[fd] == NULL)
 		return (NULL);
-	buffer = gnl_find_nl(buffer, nbyte, txtread, fd);
+	buffer[fd] = gnl_find_nl(buffer[fd], nbyte, txtread, fd);
 	if (nbyte != 0)
-		buffer = gnl_join(buffer, txtread);
-	if (*buffer == '\0' || buffer == NULL)
+		buffer[fd] = gnl_join(buffer[fd], txtread);
+	if (*(buffer[fd]) == '\0' || buffer[fd] == NULL)
 	{
-		free(buffer);
+		free(buffer[fd]);
 		return (NULL);
 	}
-	buffer = gnl_write(buffer, &res);
+	buffer[fd] = gnl_write(buffer[fd], &res);
 	return (res);
 }
 
-static char	*gnl_find_nl(char *buffer, int nbyte, char *txtread, int fd)
+char	*gnl_find_nl(char *buffer, int nbyte, char *txtread, int fd)
 {
 	int	find_nl;
 	int	i;
@@ -68,7 +68,7 @@ static char	*gnl_find_nl(char *buffer, int nbyte, char *txtread, int fd)
 	return (buffer);
 }
 
-static char	*gnl_join(char *buffer, char *txtread)
+char	*gnl_join(char *buffer, char *txtread)
 {
 	char		*tmp;
 
@@ -77,7 +77,7 @@ static char	*gnl_join(char *buffer, char *txtread)
 	return (tmp);
 }
 
-static char	*gnl_write(char *buffer, char **res)
+char	*gnl_write(char *buffer, char **res)
 {
 	int		i;
 	char	*tmp;
